@@ -231,10 +231,11 @@ After successful deployment, the following outputs will be available:
   $ terraform plan -var-file="dev-terraform.tfvars" -no-color -out=TFplan.JSON
   $ terraform apply -var-file="dev-terraform.tfvars" -auto-approve
   ```
-  **Migration to remote backen**
 
-  - Add or activate backend configuration : ```backend.tf```
-  - Reinitialize to migrate state: ```terraform init -migrate-state```
+  **Migration to remote backend**
+
+    - Add or activate backend configuration : ```backend.tf```
+    - Reinitialize to migrate state: ```terraform init -migrate-state```
 
 ### Verification
 
@@ -242,41 +243,59 @@ After successful deployment, the following outputs will be available:
 You can check the full documentation in ```Documentation``` directory and all screenshot in
 ```Screenshot verification```.
 
-- Create VPC
+- **VPC**
 
-  IMG
 
-- Create Internet Gateway
+  ![1-VPC.png](Screenshot%20verification/1-VPC.png)
 
-  IMG
 
-- Create Subnets
+- **Internet Gateway**
 
-  IMG
 
-- Create NAT Gateways
+  ![2-Internet Gateway.png](Screenshot%20verification/2-Internet%20Gateway.png)
 
-  IMG
 
-- Create Route Tables
+- **Subnets**
 
-  IMG
 
-- Create Security Groups
+  ![3-Subnets.png](Screenshot%20verification/3-Subnets.png)
 
-  IMG
 
-- Create Network ACLs (Additional Layer)
+- **NAT Gateways**
 
-  IMG
 
-- Create VPC Endpoints
+  ![5-NAT Gateways.png](Screenshot%20verification/5-NAT%20Gateways.png)
 
-  IMG
 
-- Enabling VPC Flow Logs
+- **Route Tables**
 
-  IMG
+
+  ![6-Route Tables.png](Screenshot%20verification/6-Route%20Tables.png)
+
+
+- **Security Groups**
+
+
+  ![10-Security groups.png](Screenshot%20verification/10-Security%20groups.png)
+
+
+- **Network ACLs (Additional Layer)**
+
+
+  ![7-NACLs.png](Screenshot%20verification/7-NACLs.png)
+
+
+- **VPC Endpoints**
+
+
+  ![8-VPC Endpoints.png](Screenshot%20verification/8-VPC%20Endpoints.png)
+
+
+- **VPC Flow Logs**
+
+
+  ![9-Flow logs details.png](Screenshot%20verification/9-Flow%20logs%20details.png)
+
 
 ### Cleanup
 

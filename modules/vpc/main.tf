@@ -283,7 +283,7 @@ resource "aws_vpc_endpoint" "dynamodb" {
 
 resource "aws_cloudwatch_log_group" "vpc_flow_logs" {
   name              = "/aws/vpc/${var.naming_prefix}-flow-logs"
-  retention_in_days = 7 # change as you need
+  retention_in_days = 30 # change as you need
   # Alternative: Flow Logs to S3 (more cost-effective for long-term storage)
   # Query Flow Logs with CloudWatch Logs Insights
   # Use this query to find top talkers
