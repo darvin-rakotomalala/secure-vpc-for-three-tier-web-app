@@ -1,4 +1,4 @@
-name: Static website Terraform CI/CD with OIDC
+name: Secure VPC Terraform CI/CD
 
 # Event that triggers the workflow
 on:
