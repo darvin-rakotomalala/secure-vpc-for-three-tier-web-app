@@ -65,6 +65,39 @@ A well-architected VPC enables:
 - Hybrid cloud connectivity
 - Scalability to accommodate future growth
 
+### Problem context
+
+***
+Your company is launching a production web application that handles sensitive user data (e.g. transactions, personal
+information). The engineering team has been deploying directly into a flat, single-subnet AWS environment with no
+network segmentation, all resources sharing the same security group, and no audit trail of network traffic. As the team
+scales from a proof-of-concept to a production system, several critical risks surface:
+
+* Any compromised instance can reach the database directly
+* There is no isolation between the web layer and the backend logic layer
+* Outbound traffic from internal servers is uncontrolled
+* Compliance audits (PCI-DSS, SOC 2) require documented network boundaries and access controls
+* Infrastructure is being provisioned manually through the AWS console — no repeatability, no version control, no drift
+  detection
+
+![vpc_challenge_map.svg](../vpc_challenge_map.svg)
+
+**The five core challenges built-in this project:**
+
+1. **Network segmentation** — the "blast radius" problem. If an attacker compromises the web tier, how do you prevent
+   lateral movement to the database? Your 3-tier design answers this with strict subnet isolation and security group
+   rules that only allow traffic on specific ports between adjacent tiers.
+2. **Egress control** — private instances shouldn't have free outbound access. NAT Gateways give you controlled,
+   auditable outbound traffic, while VPC Endpoints eliminate the need to route S3 and DynamoDB calls over the public
+   internet entirely.
+3. **Compliance and auditability** — without NACLs, security groups scoped per tier, and VPC Flow Logs, you cannot pass
+   a network security audit. The architecture provides a documented, evidenced control set.
+4. **Infrastructure drift and repeatability** — manual console changes can't be reviewed, rolled back, or promoted
+   across environments consistently. Terraform solves this with state-tracked, modular code and separate ```.tfvars``` per
+   environment (dev/staging/prod).
+5. **Shift-left security** — catching misconfigurations after deployment is expensive. The Checkov + GitHub Actions
+   workflow moves security checks to pull request time, before anything reaches AWS.
+
 ## Objective
 
 ***
