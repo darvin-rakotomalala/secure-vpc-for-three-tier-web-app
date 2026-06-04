@@ -305,4 +305,4 @@ To destroy all resources, run ```terraform destroy -var-file="dev-terraform.tfva
 ### License
 
 ***
-This project is provided as-is for educational and production use.
+This project is for learning and demonstration purposes. You can adapt or extend it for your own use.
