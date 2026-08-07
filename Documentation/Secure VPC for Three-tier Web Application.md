@@ -68,6 +68,7 @@ A well-architected VPC enables:
 ### Problem context
 
 ***
+
 Your company is launching a production web application that handles sensitive user data (e.g. transactions, personal
 information). The engineering team has been deploying directly into a flat, single-subnet AWS environment with no
 network segmentation, all resources sharing the same security group, and no audit trail of network traffic. As the team
@@ -173,7 +174,7 @@ VPC: 10.0.0.0/16
     └── 10.0.23.0/24  (us-east-1c)
 ```
 
-![secure-vpc-for-three-tier-web-app.jpg](../secure-vpc-for-three-tier-web-app.jpg)
+![secure-vpc-for-three-tier-web-app.png](../secure-vpc-for-three-tier-web-app.png)
 
 ## Architecture Details
 
@@ -386,9 +387,9 @@ Go to **Settings → Secrets and variables → Actions** in your fork:
 
 #### Workflow Files
 
-- **`terraform-checkov.yml`** — Automated security scanning using Checkov to detect Terraform misconfigurations at
+- **`checkov.yml`** — Automated security scanning using Checkov to detect Terraform misconfigurations at
   repository and PR levels.
-- **`deploy-infrastructure.yml`** — Terraform workflow to provision infrastructure and deploy a secure VPC with OIDC.
+- **`deploy.yml`** — Terraform workflow to provision infrastructure and deploy a secure VPC with OIDC.
 
 ## Modules
 

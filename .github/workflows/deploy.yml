@@ -42,7 +42,7 @@ permissions:
 jobs:
   terraform:
     # needs: security
-    name: Static website
+    name: vpc-3-tier-web
     runs-on: ubuntu-latest
     environment: dev
     # defaults:

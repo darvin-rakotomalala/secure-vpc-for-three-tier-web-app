@@ -2,16 +2,46 @@
 
 Automate VPC creation with Infrastructure as Code to design a Secure VPC for a Production Web Application. Build a
 production-ready, secure and highly available VPC with complete network isolation, multi-tier architecture across 3
-Availability Zones, and hybrid connectivity simulation.
+Availability Zones.
 
-Imagine you're deploying a multi-tier web application (frontend, backend, and database) in AWS.
-The main goal is:
+Imagine you're deploying a multi-tier web application (frontend, backend, and database) in AWS. The main goal is:
 
 * **Secure** : Defense-in-depth network security
 * **Scalable** : Built for growth and high availability
 * **Cost-Optimized** : Reduce egress costs and maximize value
 * **Enterprise-ready** : Governance, compliance and best practices
 * **Automated** : Terraform, CI/CD and Infrastructure as Code
+
+### Business Problem
+
+***
+
+Deploying an enterprise-grade multi-tier web application directly to the cloud without a strict architectural framework
+exposes organizations to severe operational, financial, and compliance risks. Legacy or flat cloud network designs lack
+complete network isolation between the web frontend, backend business logic, and database storage tiers. Without
+automation and granular network controls, organizations face single points of failure, bloated egress data transfer
+costs, fragmented compliance governance, and heightened exposure to security breaches.
+
+### Core Challenges
+
+***
+
+- **Security & Defense-in-Depth**: Preventing public internet exposure to sensitive backend application logic and
+  database layers requires a Zero Trust network posture. Designing multi-layered defenses across instance-level
+  firewalls (Security Groups) and subnet-level network firewalls (PCI-compliant NACLs) without breaking required
+  application traffic paths is complex.
+- **High Availability & Multi-AZ Fault Tolerance**: Ensuring high availability across 3 Availability Zones requires
+  managing complex CIDR subnet allocations, dual-path routing tables, and redundant outbound gateways (NAT Gateways) to
+  eliminate single points of failure.
+- **Cost & Route Optimization**: Uncontrolled outbound traffic over public internet routes increases cloud egress
+  expenses. Traffic bound for internal services (e.g., S3 and DynamoDB) must be routed securely and cost-effectively
+  through private endpoints rather than crossing the public internet.
+- **Infrastructure Management & Governance**: Manual, console-driven infrastructure provisioning creates configuration
+  drift, lacks auditability, and leads to security misconfigurations. Integrating automated IaC (Terraform) alongside
+  CI/CD deployment pipelines and automated static security checks (e.g., Checkov) is essential for enterprise compliance
+  and repeatability.
+- **Observability & Auditing**: Gaining visibility into VPC traffic paths for troubleshooting, threat detection, and
+  compliance auditing requires continuous network flow logging without degrading network performance.
 
 **What You’ll Learn**
 
@@ -48,6 +78,8 @@ zones with the following components:
 
 ### Architecture Diagram
 
+***
+
 **Architecture Overview**
 
 **VPC: 10.0.0.0/16**
@@ -55,7 +87,7 @@ zones with the following components:
 * Public Tier (Web):
 
 ```
-* 10.0.1.0/24 (us-east-1a)
+10.0.1.0/24 (us-east-1a)
 10.0.2.0/24 (us-east-1b)
 10.0.3.0/24 (us-east-1c)
 ```
@@ -76,9 +108,11 @@ zones with the following components:
 10.0.23.0/24 (us-east-1c)
 ```
 
-![secure-vpc-for-three-tier-web-app.jpg](secure-vpc-for-three-tier-web-app.jpg)
+![secure-vpc-for-three-tier-web-app.png](secure-vpc-for-three-tier-web-app.png)
 
 ### Architecture Details
+
+***
 
 **Network Design**
 
@@ -136,17 +170,17 @@ secure-vpc-for-three-tier-web-app/
 ├── Documentation                   # Documentation of this project
 └── modules/
     └── bootstrap/                  # This module sets up a backend for Terraform state file
-          ├── main.tf
-          ├── outputs.tf
-          └── variables.tf
+        ├── main.tf
+        ├── outputs.tf
+        └── variables.tf
     └── iam/                        # This module creates an IAM for this project
-          ├── ga-oidc.tf            # This code sets up IAM role Terraform execution ARN for GitHub Actions CI/CD using OIDC (OpenID Connect)
-          ├── outputs.tf
-          └── variables.tf
+        ├── ga-oidc.tf              # This code sets up IAM role Terraform execution ARN for GitHub Actions CI/CD using OIDC (OpenID Connect)
+        ├── outputs.tf
+        └── variables.tf
     └── vpc/                        # This module sets up a VPC
-          ├── main.tf
-          ├── outputs.tf
-          └── variables.tf
+        ├── main.tf
+        ├── outputs.tf
+        └── variables.tf
    ├── Screenshot verification      # Screenshot verification after success deployment
    ├── .gitignore                   # gitignore
    ├── backend.tf                   # Backend configuration for Terraform state file
@@ -203,11 +237,11 @@ After successful deployment, the following outputs will be available:
 
 **Step 4: Deployment Workflow**
 
-- ```terraform-checkov.yml``` — Automated security scanning framework using Checkov to detect Terraform
-  misconfigurations at both repository and pull request (PR) levels.
-- ```deploy-infrastructure.yml``` — Terraform workflow to provision infrastructure and deploy a production-grade secure
-  Virtual Private Cloud (VPC) on AWS — provisioning VPC, Subnets, NAT Gateways, Internet Gateway, Route
-  Tables, Security Groups, VPC Endpoints, Network ACLs and Flow Logs.
+- ```checkov.yml``` — Automated security scanning framework using Checkov to detect Terraform misconfigurations at both
+  repository and pull request (PR) levels.
+- ```deploy.yml``` — Terraform workflow to provision infrastructure and deploy a production-grade secure Virtual Private
+  Cloud (VPC) on AWS — provisioning VPC, Subnets, NAT Gateways, Internet Gateway, Route Tables, Security Groups, VPC
+  Endpoints, Network ACLs and Flow Logs.
 
 ### Quick Start
 
@@ -245,57 +279,39 @@ You can check the full documentation in ```Documentation``` directory and all sc
 
 - **VPC**
 
-
-  ![1-VPC.png](Screenshot%20verification/1-VPC.png)
-
+![1-VPC.png](Screenshot%20verification/1-VPC.png)
 
 - **Internet Gateway**
 
-
-  ![2-Internet Gateway.png](Screenshot%20verification/2-Internet%20Gateway.png)
-
+![2-Internet Gateway.png](Screenshot%20verification/2-Internet%20Gateway.png)
 
 - **Subnets**
 
-
-  ![3-Subnets.png](Screenshot%20verification/3-Subnets.png)
-
+![3-Subnets.png](Screenshot%20verification/3-Subnets.png)
 
 - **NAT Gateways**
 
-
-  ![5-NAT Gateways.png](Screenshot%20verification/5-NAT%20Gateways.png)
-
+![5-NAT Gateways.png](Screenshot%20verification/5-NAT%20Gateways.png)
 
 - **Route Tables**
 
-
-  ![6-Route Tables.png](Screenshot%20verification/6-Route%20Tables.png)
-
+![6-Route Tables.png](Screenshot%20verification/6-Route%20Tables.png)
 
 - **Security Groups**
 
-
-  ![10-Security groups.png](Screenshot%20verification/10-Security%20groups.png)
-
+![10-Security groups.png](Screenshot%20verification/10-Security%20groups.png)
 
 - **Network ACLs (Additional Layer)**
 
-
-  ![7-NACLs.png](Screenshot%20verification/7-NACLs.png)
-
+![7-NACLs.png](Screenshot%20verification/7-NACLs.png)
 
 - **VPC Endpoints**
 
-
-  ![8-VPC Endpoints.png](Screenshot%20verification/8-VPC%20Endpoints.png)
-
+![8-VPC Endpoints.png](Screenshot%20verification/8-VPC%20Endpoints.png)
 
 - **VPC Flow Logs**
 
-
-  ![9-Flow logs details.png](Screenshot%20verification/9-Flow%20logs%20details.png)
-
+![9-Flow logs details.png](Screenshot%20verification/9-Flow%20logs%20details.png)
 
 ### Cleanup
 

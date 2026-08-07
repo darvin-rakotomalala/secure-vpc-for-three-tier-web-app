@@ -27,7 +27,7 @@ Zones.
 
 ### Architecture diagram
 
-![secure-vpc-for-three-tier-web-app.jpg](../secure-vpc-for-three-tier-web-app.jpg)
+![secure-vpc-for-three-tier-web-app.png](../secure-vpc-for-three-tier-web-app.png)
 
 ### Steps implementation
 
