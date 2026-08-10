@@ -43,19 +43,34 @@ costs, fragmented compliance governance, and heightened exposure to security bre
 - **Observability & Auditing**: Gaining visibility into VPC traffic paths for troubleshooting, threat detection, and
   compliance auditing requires continuous network flow logging without degrading network performance.
 
-**What You’ll Learn**
+### What is an Amazon VPC?
 
-* ✔️ Production-grade VPC architecture patterns
-* ✔️ CIDR planning strategies and subnet design
-* ✔️ Public, private, and isolated subnet models
-* ✔️ NAT Gateway design and optimization
-* ✔️ Route tables and advanced routing strategies
-* ✔️ Security Groups and PCI-compliant NACL patterns
-* ✔️ VPC Endpoints and PrivateLink optimization
-* ✔️ Zero Trust networking principles on AWS
-* ✔️ Terraform Infrastructure as Code implementation
-* ✔️ GitHub Actions CI/CD integration
-* ✔️ Monitoring and observability using Flow Logs and CloudWatch
+***
+
+With Amazon Virtual Private Cloud (Amazon VPC), you can create a VPC in AWS, which is a logically isolated network
+dedicated to your AWS account. It allows you to define a virtual network that mimics a traditional on-premises network
+but with the scalability, flexibility, and security of AWS. When you create a VPC, you define an IP address range (CIDR
+block), subnets, route tables, and other networking components that determine how AWS resources—for example, Amazon
+Elastic Compute Cloud (Amazon EC2) instances—can communicate with each other and the internet.
+
+VPCs are crucial for controlling how network traffic flows into and out of AWS resources. A VPC provides the following
+core features:
+
+- **Complete network isolation** – You can launch your resources like Amazon RDS for Db2, Amazon EC2, and more inside
+  your VPC and fully control the incoming and outgoing traffic by configuring security groups and network access control
+  lists (ACLs).
+- **Security** – Security is a fundamental aspect of VPC. AWS provides security groups and network ACLs that allow you
+  to control traffic at the instance and subnet level, respectively.
+
+A VPC includes the following components:
+
+- **Subnets** – You can divide the VPC into subnets, which represent isolated network segments within the VPC. Subnets
+  can be public (accessible from the internet) or private (internal only).
+- **Route tables** – You can set up route tables to control the routing of traffic within the VPC, and between other
+  VPCs and the internet.
+- **Gateways and interface endpoints** – You can configure internet gateways, NAT gateways, and VPC endpoints to manage
+  how traffic flows between your VPC and external networks—for example, the internet or AWS services like Amazon Simple
+  Storage Service (Amazon S3).
 
 ### Architecture Overview
 
@@ -169,15 +184,15 @@ secure-vpc-for-three-tier-web-app/
 ├── AWS services study note         # AWS services study note
 ├── Documentation                   # Documentation of this project
 └── modules/
-    └── bootstrap/                  # This module sets up a backend for Terraform state file
+    └── bootstrap/                  # Backend for Terraform state file
         ├── main.tf
         ├── outputs.tf
         └── variables.tf
-    └── iam/                        # This module creates an IAM for this project
-        ├── ga-oidc.tf              # This code sets up IAM role Terraform execution ARN for GitHub Actions CI/CD using OIDC (OpenID Connect)
+    └── iam/                        # IAM for Role and permission
+        ├── ga-oidc.tf              # IAM role Terraform execution ARN for GitHub Actions CI/CD using OIDC (OpenID Connect)
         ├── outputs.tf
         └── variables.tf
-    └── vpc/                        # This module sets up a VPC
+    └── vpc/                        # VPC for networking
         ├── main.tf
         ├── outputs.tf
         └── variables.tf
@@ -200,9 +215,9 @@ secure-vpc-for-three-tier-web-app/
 
 **Step 2: Modules**
 
-- Module "bootstrap"
-- Module "iam"
-- Module "vpc"
+- **bootstrap** — Backend for Terraform state file
+- **iam** — IAM for Role and permission
+- **vpc**
     - Create VPC + DNS flags ```aws_vpc.main```
     - Internet Gateway + attach ```aws_internet_gateway.main```
     - 9 subnets (public/app/db × 3 AZs) ```aws_subnet.public/app/db``` (count loops)
@@ -211,15 +226,6 @@ secure-vpc-for-three-tier-web-app/
     - 4 Security Groups + ingress rules ```aws_security_group.web/app/db/bastion``` + ```aws_security_group_rule```
     - Public NACL + inbound/outbound rules ```aws_network_acl.public```
     - S3 + DynamoDB Gateway Endpoints ```aws_vpc_endpoint.s3/dynamodb```
-
-**A few key design decisions:**
-
-* ```count``` **loops** replace the repetitive AZ-by-AZ CLI blocks — subnets, NAT gateways, EIPs, and private route
-  tables all scale automatically if you add a 4th AZ.
-* **SSH bastion rules** (```aws_security_group_rule```) are separated from the main SG blocks to avoid Terraform
-  circular dependency issues between the app/db/bastion groups.
-* ```bastion_allowed_cidr``` defaults to the ```203.0.113.0/24``` from the source — change this to your real IP before
-  applying.
 
 **Step 3: Outputs**<br>
 After successful deployment, the following outputs will be available:
